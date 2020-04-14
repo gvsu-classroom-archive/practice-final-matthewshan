@@ -1,0 +1,58 @@
+<head>
+
+</head>
+<body>
+    <script>
+        function generateData(data) {
+            let id = document.getElementById('num').value
+            let table = document.getElementById('result')
+            let totalCost = 0;
+            let str = `<table><tr>
+                        <th>Item</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                        </tr>`
+            
+            for(let i = 0; i < data.length; i++) {
+                str += `<tr>
+                        <td>${data[i].item}</td>
+                        <td>${data[i].quantity}</td>
+                        <td>$${data[i].price}</td>
+                    </tr>`
+                totalCost += data[i].price
+            }
+            str += `<tr>
+                        <td style="border-top: 1px black solid">Total:</td>
+                        <td style="border-top: 1px black solid"></td>
+                        <td style="border-top: 1px black solid">$${totalCost}</td>
+                    </tr>`
+            str += "</table>"
+            table.innerHTML = str
+        }
+
+
+        function buttonClick() {
+            let id = document.getElementById('num').value
+            fetch(`https://www.cis.gvsu.edu/~kurmasz/Orders/${id}`)
+                .then((response) => {
+                    return response.json()
+                })
+                .then((data) => {
+                    console.log(data)
+                    generateData(data)
+                })   
+                .catch((error) => {
+                    alert("Error Retrieving Data")
+                })
+                
+        }
+    </script>
+    <div>
+        <p>Enter your order number:</p>
+        <input id="num" type="text"/>
+        <button type="submit" onclick="buttonClick()">Submit</button>
+        <div id="result">
+
+        </div>
+    </div>  
+</body>
